@@ -5,7 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Project1.Controllers
 {
@@ -25,10 +24,10 @@ namespace Project1.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
-            CreatePasswordHash(request.Password, out byte[] passeordHash, out byte[] passwordSalt);
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.Username = request.Username;
-            user.PasswordHash = passeordHash;
+            user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
             return Ok(user);
@@ -60,7 +59,6 @@ namespace Project1.Controllers
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdabcdabcdabcd"));
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Token").Value));
 
@@ -68,6 +66,8 @@ namespace Project1.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
+                issuer: "Project1",
+                audience: "Project1",
                 claims: claims,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds);

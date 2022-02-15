@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -26,14 +25,11 @@ builder.Services.AddAuthentication(options =>
         {
             ValidateIssuer = true,
             ValidateAudience = true,
-            //ValidateIssuer = false,
-            //ValidateAudience = false,
             ValidIssuer = "Project1",
             ValidAudience = "Project1",
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
             ValidateIssuerSigningKey = true,
-            //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdabcdabcdabcd")),
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
                 .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
         };
