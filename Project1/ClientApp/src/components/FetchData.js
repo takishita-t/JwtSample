@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 export class FetchData extends Component {
     static displayName = FetchData.name;
   constructor(props) {
@@ -48,9 +49,16 @@ export class FetchData extends Component {
     );
   }
 
-  async populateWeatherData() {
-    const response = await fetch('weatherforecast');
-    const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    async populateWeatherData() {
+      const token = 'eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWFhYWEiLCJleHAiOjE2NDQ5OTAxMzksImlzcyI6IlByb2plY3QxIiwiYXVkIjoiUHJvamVjdDEifQ.akUooB_kCNSKfVGyS65lSPBlpWWmSWt0oo9PXIP1P4ewOExlue9rsBQvKQPXj13cPzvexxIIJpB7CX_fewVqjw';
+      const response = await fetch('weatherforecast', {
+          method: 'GET',
+          headers: {
+              'Content-type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+          },
+      });
+      const data = await response.json();
+      this.setState({forecasts: data, loading: false });
   }
 }
