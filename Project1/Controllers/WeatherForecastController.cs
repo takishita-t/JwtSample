@@ -2,6 +2,7 @@
 
 namespace Project1.Controllers
 {
+    //WheatherForecast
     [ApiController]
     [Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
