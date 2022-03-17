@@ -18,6 +18,7 @@ namespace Project1.Controllers
             _logger = logger;
         }
 
+        //WheatherForecast
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
