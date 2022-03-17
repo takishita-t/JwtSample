@@ -20,6 +20,7 @@ namespace Project1.Controllers
             _configuration = configuration;
         }
 
+        //登録
         [HttpPost("register")]
         [AllowAnonymous]
         public async Task<ActionResult<User>> Register(UserDto request)
@@ -33,6 +34,7 @@ namespace Project1.Controllers
             return Ok(user);
         }
 
+        //ログイン
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<string>> Login(UserDto request)
@@ -41,17 +43,15 @@ namespace Project1.Controllers
             {
                 return BadRequest("User not found.");
             }
-
             if(!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return BadRequest("Wrong password.");
             }
-
             string token = CreateToken(user);
-
             return Ok(token);
         }
 
+        //トークン発行
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
@@ -77,7 +77,7 @@ namespace Project1.Controllers
             return jwt;
         }
 
-
+        //パスワードハッシュ
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
